@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primeiro Exemplo JS</title>
+</head>
+<body>
+    <button type="button" id="btnContar">Contar: 0</button>
+    <div id="divContainer"></div>
+    <script>
+        let conta = 0;
+        let btnContar = document.getElementById('btnContar');
+        let divContainer = document.getElementById('divContainer');
+
+        btnContar.addEventListener('click', () => { 
+            contar();
+            btnContar.textContent = `Contar: ${conta}`;
+            criarBotao(conta);
+        })
+        let contar = () => {
+            conta++;
+        }
+        let criarBotao = (numero) => {
+            let newButton = document.createElement('button');
+            let texto;
+            if(numero % 2 == 0){texto = 'Par';} else {texto = 'Impar';}
+            newButton.textContent = `Botão ${numero} ${texto}`;
+            divContainer.appendChild(newButton);
+        }
+    </script>
+</body>
+</html>
+<!-- Clean Code & Solid -->
