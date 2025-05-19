@@ -9,11 +9,7 @@ buttonCadastre.addEventListener('click', () => {
 });
 let verif = (number) => {
     let texto;
-    if(number >= 18) {
-        texto = "maior de idade";
-        mensagem.innerHTML = `Olá ${nome}, você é ${texto} e está apto ao alistamento!`;
-    } else {
-        texto = "menor de idade";
-        msg.innerHTML = `Olá ${nome}, você é ${texto} e não está aptado ao alistamento ainda!`;
+    if(number) {
+        mensagem.textContent() = `Olá ${nome}, você`;
     }
 }
