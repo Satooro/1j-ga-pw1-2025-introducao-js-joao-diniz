@@ -1,7 +1,62 @@
 html {
     font-family: sans-serif;
-    font-size: 50px;
 }
-#tentativas {
-    font-size: 50px;
+body {
+    display: flex;
+    margin: 0;
+}
+main {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(#3e3e3e 25%, #ff0000);
+}
+
+.divSimples {
+    display: flex;
+    width: 200px;
+    min-height: 350px;
+    background-color: #fff;
+    word-wrap: normal;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    line-break: auto;
+}
+.flex {
+    display: flex;
+}
+
+#section-principal {
+    display: flex;
+    width: 100%;
+    min-height: 350px;
+    align-self: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
+.borda {
+    border-radius: 25px;
+}
+.inputBorda {
+    border-radius: 25px;
+    outline: none;
+}
+
+form {
+    display: flex;
+    width: 350px;
+    background-color: #3e3e3e;
+    align-items: center;
+    /* margin-inline: auto; */
+    flex-direction: column;
+    justify-content: center;
+}
+
+#divInputNumero {
+    display: flex;
+    width: fit-content;
+    height: 50px;
 }

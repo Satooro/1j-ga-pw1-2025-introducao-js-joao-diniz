@@ -7,13 +7,34 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <form>
-        <label for="numero">Número</label>
-        <input type="number" id="inputNumero" name="numero">
-        <button type="button" id="buttonEnviar">Enviar</button>
-        <div id="tentativas"></div>
-        <div id="msg"></div>
-    </form>
+    <main>
+        <section id="section-principal">
+            <div id="tentativas" class="divSimples borda">
+
+            </div>
+            <form class="borda">
+                <div id="inputNome" class="flex">
+                    <input type="text" class="inputBorda" id="inputNome" placeholder="Apelido do Jogador">
+                </div>
+                <div id="divInputNumero" class="flex">
+                    <input type="number" class="inputBorda" id="inputNumero" placeholder="Número de 1 à 50">
+                </div>
+                <button type="button" id="buttonEnviar">Enviar</button>
+                
+                <!-- <div id="tentativas"></div> -->
+                <!-- <div id="msg"></div> -->
+            </form>
+            <div id="msg" class="divSimples borda">
+
+            </div>
+        </section>
+    </main>
     <script src="./js/main.js"></script>
 </body>
 </html>
+
+<!-- 
+- Adicionar interface
+- Adicionar botão pra registrar/talvez
+- Adicionar botão pra tentar novamente
+-->
