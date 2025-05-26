@@ -1,37 +1,59 @@
 document.addEventListener('DOMContentLoaded', () => {
     const buttonEnviar = document.getElementById('buttonEnviar');
+    const buttonNome = document.getElementById('buttonNome');
+    const buttonAgain = document.getElementById('buttonJogarNovamente');
 
     const randomGenerate = () => {
         return Math.floor(Math.random() * 50) + 1;
     }
+
+    buttonAgain.style.display = 'none';
+    const sectionPrincipal = document.getElementById('section-principal');
+    sectionPrincipal.style.display = 'none';
+
     let randomNumber = randomGenerate();
 
     let msg = document.getElementById('msg');
     let tentativasMsg = document.getElementById('tentativas');
     let tentativas = 0;
     let numeros = [];
-    let running = true;
+    let playerName;
+
     console.log(`Apenas para testes o número aleatório é: ${randomNumber}`);
 
     const menorOuMaior = (number, random) => {
         return random < number ? `O número aleatório é menor que ${number}` : `O número aleatório é maior que ${number}`;
     }
 
-    const verificarNum = () => {
-        if(running){
+    const salvarNome = () => {
+        playerName = document.getElementById('inputNome').value;
+        return console.log(`Nome do individuo: ${playerName}`)
+    }
+    const mostrarJogo = () => {
+        let sectionNome = document.getElementById('section-jogador');
+        let sectionJogo = document.getElementById('section-principal');
+        sectionNome.style.display = "none";
+        sectionJogo.style.display = "flex";
+    }
 
-            entrada = parseInt(document.getElementById('inputNumero').value);
-            console.log(`${entrada} - random: ${randomNumber}`);
-            if (entrada == randomNumber) {
-                msg.textContent = `Você acertou! O número era: ${randomNumber}`;
-                tentativasMsg.textContent = `Suas tentativas foram: ${numeros}`;
-                running = false
-            } else {
-                verificarTentativas(entrada);
-            }
+    const showPlayAgain = () => {
+        buttonEnviar.style.display = 'none';
+        document.getElementById('inputNumero').style.display = "none";
+        buttonAgain.style.display = 'flex';
+    }
+
+    const verificarNum = () => {
+
+        entrada = parseInt(document.getElementById('inputNumero').value);
+        console.log(`${entrada} - random: ${randomNumber}`);
+        if (entrada == randomNumber) {
+            msg.textContent = `Você acertou ${playerName}! Parabéns o número era: ${randomNumber}`;
+            tentativasMsg.textContent = `Suas tentativas foram: ${numeros}`;
+            showPlayAgain();
         } else {
-            msg.textContent = `Você já acertou, o número era: ${randomNumber}`;
+            verificarTentativas(entrada);
         }
+
     }
 
     const verificarTentativas = (entrada) => {
@@ -42,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tentativas++;
                 tentativasMsg.textContent = `Total de tentativas: ${tentativas}\nTentativas restantes: ${10 - tentativas}`;
             } else {
-                msg.textContent = `Você atingiu o máximo de tentativas, o número correto era: ${randomNumber}`;
+                msg.textContent = `${playerName} você atingiu o máximo de tentativas, o número correto era: ${randomNumber}`;
                 tentativasMsg.textContent = `Suas tentativas foram: ${numeros}`;
             }
         } else {
@@ -51,7 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    buttonAgain.addEventListener('click', () => {
+        random = randomGenerate();
+        sectionPrincipal.style.display = 'flex';
+        // document.getElementById('section-jogador').style.display = 'none';
+        document.getElementById('inputNumero').style.display = "flex";
+        buttonAgain.style.display = 'none';
+    })
+
     buttonEnviar.addEventListener('click', () => {
         verificarNum();
     });
+    buttonNome.addEventListener('click', () => {
+        salvarNome();
+        mostrarJogo();
+    })
 });

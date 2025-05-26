@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gincana - Adivinhe o Número</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <main>
-        <section id="section-principal">
+        <section id="section-jogador" class="sections-center">
+            <form class="borda flex">
+                <input type="text" class="inputBorda" id="inputNome" placeholder="Nome do jogador">
+                <button type="button" id="buttonNome">Jogar</button>
+            </form>
+        </section>
+        <section id="section-principal" class="sections-center">
             <div id="tentativas" class="divSimples borda">
-
             </div>
             <form class="borda">
-                <div id="inputNome" class="flex">
-                    <input type="text" class="inputBorda" id="inputNome" placeholder="Apelido do Jogador">
-                </div>
-                <div id="divInputNumero" class="flex">
+                <div class="flex">
                     <input type="number" class="inputBorda" id="inputNumero" placeholder="Número de 1 à 50">
                 </div>
                 <button type="button" id="buttonEnviar">Enviar</button>
                 
-                <!-- <div id="tentativas"></div> -->
-                <!-- <div id="msg"></div> -->
+                <button tpye="button" id="buttonJogarNovamente">Jogar novamente</button>
             </form>
             <div id="msg" class="divSimples borda">
 

@@ -28,7 +28,7 @@ main {
     display: flex;
 }
 
-#section-principal {
+.sections-center {
     display: flex;
     width: 100%;
     min-height: 350px;
@@ -41,8 +41,17 @@ main {
     border-radius: 25px;
 }
 .inputBorda {
+    display: flex;
+    width: fit-content;
     border-radius: 25px;
+    width: 250px;
+    height: 50px;
+    text-align: center;
     outline: none;
+}
+
+#nomeIndividuo {
+    font-size: 30px;
 }
 
 form {
@@ -50,13 +59,6 @@ form {
     width: 350px;
     background-color: #3e3e3e;
     align-items: center;
-    /* margin-inline: auto; */
     flex-direction: column;
     justify-content: center;
-}
-
-#divInputNumero {
-    display: flex;
-    width: fit-content;
-    height: 50px;
 }
