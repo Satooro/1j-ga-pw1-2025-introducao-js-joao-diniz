@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     }
+    
 
     const verificarTentativas = (entrada) => {
         if (entrada >= 1 && entrada <= 50) {
@@ -75,9 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     buttonAgain.addEventListener('click', () => {
         random = randomGenerate();
-        sectionPrincipal.style.display = 'flex';
-        // document.getElementById('section-jogador').style.display = 'none';
-        document.getElementById('inputNumero').style.display = "flex";
+        buttonEnviar.style.display = 'flex';
+        document.getElementById('inputNumero').style.display = 'flex';
         buttonAgain.style.display = 'none';
     })
 

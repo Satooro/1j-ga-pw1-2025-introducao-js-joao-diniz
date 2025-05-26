@@ -39,6 +39,8 @@ main {
 
 .borda {
     border-radius: 25px;
+    border: #000 1px solid;
+    box-shadow: 5px 6px 6px rgba(0, 0, 0, 0.3);
 }
 .inputBorda {
     display: flex;
