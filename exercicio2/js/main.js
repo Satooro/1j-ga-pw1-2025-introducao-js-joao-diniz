@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const buttonEnviar = document.getElementById('buttonEnviar');
     const buttonNome = document.getElementById('buttonNome');
-    const buttonAgain = document.getElementById('buttonJogarNovamente');
+    const buttonAgain = document.getElementById('btnNovamente');
+    const buttonTeste = document.getElementById('btnTeste');
+    buttonTeste.style.display = 'none';
 
     const randomGenerate = () => {
         return Math.floor(Math.random() * 50) + 1;
@@ -40,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonEnviar.style.display = 'none';
         document.getElementById('inputNumero').style.display = "none";
         buttonAgain.style.display = 'flex';
+        buttonTeste.style.display = 'flex';
     }
 
     const verificarNum = () => {
@@ -74,18 +77,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    buttonAgain.addEventListener('click', () => {
-        random = randomGenerate();
-        buttonEnviar.style.display = 'flex';
-        document.getElementById('inputNumero').style.display = 'flex';
-        buttonAgain.style.display = 'none';
-    })
-
+    
     buttonEnviar.addEventListener('click', () => {
         verificarNum();
     });
+
     buttonNome.addEventListener('click', () => {
         salvarNome();
         mostrarJogo();
+    })
+
+    const resetarGame = () => {
+        randomNumber = randomGenerate();
+        console.log(randomNumber);
+        buttonEnviar.style.display = 'flex';
+        document.getElementById('inputNumero').style.display = 'flex';
+        buttonTeste.style.display = 'none';
+        buttonAgain.style.display = 'none';
+        tentativas = 0;
+        numeros = [];
+        msg.textContent = ``;
+        tentativasMsg.textContent = ``;
+    }
+
+    buttonTeste.addEventListener('click', () => {
+        resetarGame();
     })
 });
