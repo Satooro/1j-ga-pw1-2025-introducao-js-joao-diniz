@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttonNome = document.getElementById('buttonNome');
     const buttonAgain = document.getElementById('btnNovamente');
     const buttonTeste = document.getElementById('btnTeste');
+
     buttonTeste.style.display = 'none';
 
     const randomGenerate = () => {
@@ -20,11 +21,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let tentativas = 0;
     let numeros = [];
     let playerName;
+    let vitorias = 0;
 
     console.log(`Apenas para testes o número aleatório é: ${randomNumber}`);
 
     const menorOuMaior = (number, random) => {
         return random < number ? `O número aleatório é menor que ${number}` : `O número aleatório é maior que ${number}`;
+    }
+
+    const vitoriasFunction = (variavel) => {
+        if(variavel){
+            return vitorias++;
+        } else {
+            vitorias = 0;
+        }
     }
 
     const salvarNome = () => {
@@ -50,15 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
         entrada = parseInt(document.getElementById('inputNumero').value);
         console.log(`${entrada} - random: ${randomNumber}`);
         if (entrada == randomNumber) {
-            msg.textContent = `Você acertou ${playerName}! Parabéns o número era: ${randomNumber}`;
+            vitoriasFunction(true);
+            msg.textContent = `Você acertou ${playerName}! Parabéns o número era: ${randomNumber}\nVocê tem ${vitorias} vitórias`;
             tentativasMsg.textContent = `Suas tentativas foram: ${numeros}`;
             showPlayAgain();
         } else {
             verificarTentativas(entrada);
         }
 
-    }
-    
+    }   
 
     const verificarTentativas = (entrada) => {
         if (entrada >= 1 && entrada <= 50) {
@@ -69,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 tentativasMsg.textContent = `Total de tentativas: ${tentativas}\nTentativas restantes: ${10 - tentativas}`;
             } else {
                 msg.textContent = `${playerName} você atingiu o máximo de tentativas, o número correto era: ${randomNumber}`;
-                tentativasMsg.textContent = `Suas tentativas foram: ${numeros}`;
+                vitoriasFunction(false);
+                tentativasMsg.textContent = `Suas tentativas foram: ${numeros}\nA`;
             }
         } else {
             tentativasMsg.textContent = `Tentativa não contabilizada!`;
