@@ -1,15 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
     let divCorpo;
+    localStorage.clear();
+    localStorage.setItem('a', 'a');
+    let min = 0;
+    let max = 50;
+    let random = Math.floor(Math.random() * (max - min));
+    console.log(`Número aleatório gerado: ${random}`);
 
 
     const montarPagina = () => {
         divCorpo = document.getElementById('corpo');
         divCorpo.appendChild(criarRegOuLogin());
     }
-
-    const criarRegOuLogin = () => {
+    const criarSectionRegPlayer = () => {
         const sectionRegPlayer = document.createElement('section');
         sectionRegPlayer.id = 'section-player';
+        divCorpo = document.getElementById('corpo');
+        divCorpo.appendChild(sectionRegPlayer);
+    }
+
+    const registroOuLogin = () => {
+        const divBotoes = document.getElementById('div-botoes');
+        const divRegister = document.getElementById('div-register');
+        if (divRegister != null) {
+            divRegister.remove();
+        }
+        if (divBotoes != null) {
+            divBotoes.remove();
+        }
+        criarLoginPlayer();
+    }
+
+    const criarRegOuLogin = () => {
+        const sectionRegPlayer = document.getElementById('section-player');
 
         const divBotoes = document.createElement('div');
         const buttonRegister = document.createElement('button');
@@ -21,11 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonRegister.id = `buttonRegister`;
         buttonRegister.class = `botoesAzul`;
         buttonRegister.addEventListener('click', () => criarRegPlayer());
-        
+
         buttonLogin.textContent = `Logar`;
         buttonLogin.type = `button`;
         buttonLogin.id = `buttonLogin`;
         buttonLogin.class = `botoesAzul`;
+        buttonLogin.addEventListener('click', () => { registroOuLogin() });
 
         divBotoes.appendChild(buttonRegister);
         divBotoes.appendChild(buttonLogin);
@@ -39,9 +63,170 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(name).remove();
     }
 
+    const criarLoginPlayer = () => {
+        console.log('criarloginplayer');
+        const sectionPlayer = document.getElementById('section-player');
+        const formLoginPlayer = document.createElement('form');
+        formLoginPlayer.id = 'form-login';
+
+        const divLogin = document.createElement('div');
+        const textLogin = document.createElement('p');
+        const textErro = document.createElement('p');
+        const inputNome = document.createElement('input');
+        const inputPassword = document.createElement('input');
+        const divLoginBotoes = document.createElement('div');
+        const buttonLogin = document.createElement('input');
+        const buttonVoltar = document.createElement('input');
+        divLogin.id = 'div-login';
+        divLogin.className = 'divMeio';
+        textLogin.id = 'p-login';
+        textLogin.textContent = 'Logar';
+        textErro.id = 'p-login-erro';
+
+        inputNome.id = 'input-nome-login';
+        inputNome.type = `text`;
+        inputNome.placeholder = `Nome de usuário`;
+        inputNome.required = true;
+
+        inputPassword.id = `input-passw-login`;
+        inputPassword.type = `password`;
+        inputPassword.placeholder = `Insira sua senha`;
+        inputPassword.required = true;
+
+        divLoginBotoes.id = 'div-login-botoes';
+
+        buttonLogin.id = `button-login`;
+        buttonLogin.type = `submit`;
+        buttonLogin.value = 'Logar';
+        buttonLogin.className = 'botoes';
+
+        buttonVoltar.id = `button-login-voltar`;
+        buttonVoltar.type = `button`;
+        buttonVoltar.value = `Voltar`;
+        buttonVoltar.className = 'botoes';
+        buttonVoltar.addEventListener('click', () => {
+            formLoginPlayer.remove();
+            montarPagina();
+        })
+
+        divLogin.appendChild(textLogin);
+        divLogin.appendChild(textErro);
+        divLogin.appendChild(inputNome);
+        divLogin.appendChild(inputPassword);
+        divLoginBotoes.appendChild(buttonVoltar);
+        divLoginBotoes.appendChild(buttonLogin);
+        divLogin.appendChild(divLoginBotoes);
+        formLoginPlayer.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            let usuario = document.getElementById('input-nome-login').value;
+            let senha = document.getElementById('input-passw-login').value;
+            if (verificarLogin(usuario, senha)) {
+                sectionPlayer.remove();
+                criarSectionJogo();
+                criarJogo();
+            } else {
+                console.log('passou não tio');
+            }
+
+        })
+
+        formLoginPlayer.appendChild(divLogin);
+        sectionPlayer.appendChild(formLoginPlayer);
+    }
+
+    const verificarLogin = (key, senha) => {
+        let verificacao = false;
+        let passw = localStorage.getItem(key);
+        if (senha == passw) { verificacao = true; }
+        return verificacao;
+    }
+
+    const criarSectionJogo = () => {
+        const sectionGame = document.createElement('section');
+        sectionGame.id = 'section-jogo';
+        divCorpo = document.getElementById('corpo');
+        divCorpo.appendChild(sectionGame);
+    }
+
+    const criarJogo = () => {
+        const sectionJogo = document.getElementById('section-jogo');
+        const divJogo = document.createElement('div');
+        divJogo.id = 'div-jogo';
+        divJogo.className = 'divMeio'
+        criarNumerosMinMax(min, max, divJogo);
+
+        const pEscolha = document.createElement('p');
+        pEscolha.id = 'p-jogo-escolha';
+        pEscolha.textContent = `??`;
+
+
+
+        divJogo.appendChild(pEscolha)
+
+        criarNumerosClicaveis(divJogo);
+        criarBotoesJogo(divJogo);
+        sectionJogo.appendChild(divJogo);
+    }
+
+    const criarBotoesJogo = (divJogo) => {
+        const divButttonsJogo = document.createElement('div');
+        divButttonsJogo.id = 'botoes-jogo';
+        const botaoLimpar = document.createElement('button');
+        const botaoChutar = document.createElement('button');
+        const botaoSair = document.createElement('button');
+        botaoLimpar.id = 'button-jogo-limpar';
+        botaoLimpar.type = 'button';
+        botaoLimpar.textContent = 'Limpar';
+        botaoLimpar.className = 'botoes-jogo';
+
+        botaoChutar.id = 'button-jogo-chutar';
+        botaoChutar.type = 'button';
+        botaoChutar.textContent = 'Chutar';
+        botaoChutar.className = 'botoes-jogo';
+
+        botaoSair.id = 'button-jogo-sair';
+        botaoSair.type = 'button';
+        botaoSair.textContent = 'Sair';
+        botaoSair.className = 'botoes-jogo';
+        botaoSair.addEventListener('click', () => {
+            const sectionJogo = document.getElementById('section-jogo');
+            sectionJogo.remove();
+            criarSectionRegPlayer();
+            montarPagina();
+        })
+        divButttonsJogo.appendChild(botaoLimpar);
+        divButttonsJogo.appendChild(botaoChutar);
+        divButttonsJogo.appendChild(botaoSair);
+        divJogo.appendChild(divButttonsJogo);
+    }
+
+    const criarNumerosMinMax = (min, max, divCriar) => {
+        const p = document.createElement('p');
+        p.id = 'p-min-max';
+        p.textContent = `${min} > ? < ${max}`;
+        divCriar.appendChild(p);
+    }
+
+    const criarNumerosClicaveis = (divPraCriar) => {
+        let divNumeros = document.createElement('div');
+        divNumeros.id = 'div-numeros';
+        for (let count = 0; count < 10; count++) {
+            let divNumero = document.createElement('div');
+            divNumero.id = `div-numero-${count}`;
+            divNumero.className = 'div-numero';
+            divNumero.textContent = count;
+            divNumero.addEventListener('click', () => {
+                console.log(`Você clicou no número ${count}`);
+            });
+            divNumeros.appendChild(divNumero);
+        }
+        divPraCriar.appendChild(divNumeros);
+    }
+
     const criarRegPlayer = () => {
         remover('div-botoes');
-        
+
         const sectionRegPlayer = document.getElementById('section-player');
 
         const formRegPlayer = document.createElement('form');
@@ -52,7 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const textoErro = document.createElement('p');
         const inputNome = document.createElement('input');
         const inputPassword = document.createElement('input');
+        const divRegisterBotoes = document.createElement('div');
         const buttonRegister = document.createElement('input');
+        const buttonVoltar = document.createElement('input');
         divRegister.id = 'div-register';
         divRegister.className = 'divMeio';
         textoReg.id = `p-reg`;
@@ -68,28 +255,37 @@ document.addEventListener('DOMContentLoaded', () => {
         inputPassword.type = `password`;
         inputPassword.placeholder = `Insira uma senha`;
         inputPassword.required = true;
-        inputPassword
+
+        divRegisterBotoes.id = 'div-register-botoes';
 
         buttonRegister.id = `button-register`;
         buttonRegister.type = `submit`;
-        buttonRegister.name = 'Registrar';
+        buttonRegister.value = 'Registrar';
+        buttonRegister.className = 'botoes';
+
+        buttonVoltar.id = `button-reg-voltar`;
+        buttonVoltar.type = `button`;
+        buttonVoltar.value = `Voltar`;
+        buttonVoltar.className = 'botoes';
+        buttonVoltar.addEventListener('click', () => {
+            formRegPlayer.remove();
+            montarPagina();
+        })
 
         divRegister.appendChild(textoReg);
         divRegister.appendChild(textoErro);
         divRegister.appendChild(inputNome);
         divRegister.appendChild(inputPassword);
-        divRegister.appendChild(buttonRegister);
+        divRegisterBotoes.appendChild(buttonVoltar);
+        divRegisterBotoes.appendChild(buttonRegister);
+        divRegister.appendChild(divRegisterBotoes);
 
-        formRegPlayer.addEventListener("submit", (e) => { 
+        formRegPlayer.addEventListener("submit", (e) => {
             e.preventDefault();
             let usuario = document.getElementById('input-nome').value;
             let senha = document.getElementById('input-passw').value;
             registrarPlayer(usuario, senha);
-            setTimeout(() => {
-                console.log('Olá usuário registrado');
-            }, 3000);
         });
-        git PushManager
 
         formRegPlayer.appendChild(divRegister);
         sectionRegPlayer.appendChild(formRegPlayer);
@@ -99,17 +295,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let senha = localStorage.getItem(key);
         let textoErro = document.getElementById('p-reg-erro');
         textoErro.style.fontSize = '14px';
-        if(senha == null){
+        if (senha == null) {
             localStorage.setItem(key, value);
             textoErro.textContent = `Usuário ${key} registrado`;
             textoErro.style.color = `#01ff11`;
+            setTimeout(() => {
+                document.getElementById('div-register').remove();
+                registroOuLogin();
+            }, 1000);
         } else {
             textoErro.textContent = `Usuário ${key} já tem registro`;
             textoErro.style.color = `#ff0000`;
         }
     }
 
-
-
+    criarSectionRegPlayer();
     montarPagina();
 });
