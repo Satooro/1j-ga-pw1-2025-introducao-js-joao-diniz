@@ -23,7 +23,7 @@ main {
 #div-register {
     display: flex;
     align-items: center;
-    min-height: calc(100% + 300px);
+    min-height: 250px;
 }
 
 #div-numeros {

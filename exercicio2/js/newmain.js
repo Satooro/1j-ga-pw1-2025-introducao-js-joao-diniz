@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let divCorpo;
     localStorage.clear();
     localStorage.setItem('a', 'a');
-    let min = 0;
-    let max = 50;
-    let random = Math.floor(Math.random() * (max - min));
-    console.log(`Número aleatório gerado: ${random}`);
+    let random = 0;
+    const criarNumeroRandom = (min, max) => {
+        random = Math.floor(Math.random() * (max - min));
+    }
+    let tentativas = 10;
+    let min = 0, maximo = 50;
 
 
     const montarPagina = () => {
@@ -152,15 +154,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const criarJogo = () => {
         const sectionJogo = document.getElementById('section-jogo');
         const divJogo = document.createElement('div');
+        criarNumeroRandom(0,50);
+        let numeroRandom = random;
+        console.log(`O Número aleatório gerado foi: ${numeroRandom}`);
         divJogo.id = 'div-jogo';
         divJogo.className = 'divMeio'
-        criarNumerosMinMax(min, max, divJogo);
+        criarNumerosMinMax(0, 50, divJogo);
+
+        tentativas = 10;
 
         const pEscolha = document.createElement('p');
         pEscolha.id = 'p-jogo-escolha';
         pEscolha.textContent = `??`;
-
-
 
         divJogo.appendChild(pEscolha)
 
@@ -179,11 +184,38 @@ document.addEventListener('DOMContentLoaded', () => {
         botaoLimpar.type = 'button';
         botaoLimpar.textContent = 'Limpar';
         botaoLimpar.className = 'botoes-jogo';
+        botaoLimpar.addEventListener('click', () => limparNumeros());
 
         botaoChutar.id = 'button-jogo-chutar';
         botaoChutar.type = 'button';
         botaoChutar.textContent = 'Chutar';
         botaoChutar.className = 'botoes-jogo';
+        botaoChutar.addEventListener('click', () => {
+            const pNumero = document.getElementById('p-jogo-escolha');
+            numeroRandom = random;
+            let numeroEscolhido = pNumero.textContent;
+            if(numeroEscolhido >= 0 && numeroEscolhido <= 50){
+                if(tentativas > 0){
+                    console.log(`Suas tentativas antes: ${tentativas}`)
+                    tentativas--;
+                    console.log(`Suas tentativas agora: ${tentativas}`)
+                    if(numeroEscolhido>random && numeroEscolhido < maximo){
+                        maximo = numeroEscolhido;
+                    } else if(numeroEscolhido<random && numeroEscolhido > min) {
+                        min = numeroEscolhido;
+                    }
+
+                    pNumero.textContent = "??";
+                    const pAmostra = document.getElementById('p-min-max');
+                    pAmostra.textContent = `${min} > ? < ${maximo}`;
+
+                    if(numeroEscolhido == numeroRandom){
+                        pAmostra.textContent = `${min} > ${numeroEscolhido} < ${maximo}`;
+                        pNumero.textContent = `Você acertou o número.`;
+                    };
+                }
+            }
+        });
 
         botaoSair.id = 'button-jogo-sair';
         botaoSair.type = 'button';
@@ -194,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sectionJogo.remove();
             criarSectionRegPlayer();
             montarPagina();
-        })
+        });
         divButttonsJogo.appendChild(botaoLimpar);
         divButttonsJogo.appendChild(botaoChutar);
         divButttonsJogo.appendChild(botaoSair);
@@ -208,6 +240,13 @@ document.addEventListener('DOMContentLoaded', () => {
         divCriar.appendChild(p);
     }
 
+    const limparNumeros = () => {
+        const pNumero = document.getElementById('p-jogo-escolha');
+        if(!pNumero.textContent.endsWith('.')){
+            pNumero.textContent = "??";
+        }
+    }
+
     const criarNumerosClicaveis = (divPraCriar) => {
         let divNumeros = document.createElement('div');
         divNumeros.id = 'div-numeros';
@@ -218,6 +257,14 @@ document.addEventListener('DOMContentLoaded', () => {
             divNumero.textContent = count;
             divNumero.addEventListener('click', () => {
                 console.log(`Você clicou no número ${count}`);
+                const pNumero = document.getElementById('p-jogo-escolha');
+                let numeroAtual = pNumero.textContent;
+                if(pNumero.textContent == "??"){
+                    pNumero == "";
+                    pNumero.textContent = count;
+                } else if(!pNumero.textContent.endsWith(".")){
+                    pNumero.textContent = numeroAtual + count;
+                }
             });
             divNumeros.appendChild(divNumero);
         }
@@ -309,6 +356,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    criarSectionRegPlayer();
-    montarPagina();
+    criarSectionJogo();
+    criarJogo();
+    /*
+    Código comentado para facilitar o trabalho na página do jogo:
+
+    //criarSectionRegPlayer();
+    // montarPagina();
+    */
 });
