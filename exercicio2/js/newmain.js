@@ -35,36 +35,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    const remover = (name) => {
+        document.getElementById(name).remove();
+    }
+
     const criarRegPlayer = () => {
-        const divBotoes = document.getElementById('div-botoes');
-        divBotoes.remove();
+        remover('div-botoes');
+        
+        const sectionRegPlayer = document.getElementById('section-player');
+
         const formRegPlayer = document.createElement('form');
-        formRegPlayer.id = 'form-player'
+        formRegPlayer.id = 'form-player';
 
         const divRegister = document.createElement('div');
         const textoReg = document.createElement('p');
+        const textoErro = document.createElement('p');
         const inputNome = document.createElement('input');
         const inputPassword = document.createElement('input');
-        const buttonRegister = document.createElement('button');
+        const buttonRegister = document.createElement('input');
         divRegister.id = 'div-register';
+        divRegister.className = 'divMeio';
         textoReg.id = `p-reg`;
         textoReg.textContent = `Registrar`;
+        textoErro.id = `p-reg-erro`;
 
         inputNome.id = `input-nome`;
         inputNome.type = `text`;
         inputNome.placeholder = `Nome de usuário`;
+        inputNome.required = true;
 
         inputPassword.id = `input-passw`;
         inputPassword.type = `password`;
         inputPassword.placeholder = `Insira uma senha`;
+        inputPassword.required = true;
+        inputPassword
+
+        buttonRegister.id = `button-register`;
+        buttonRegister.type = `submit`;
+        buttonRegister.name = 'Registrar';
 
         divRegister.appendChild(textoReg);
+        divRegister.appendChild(textoErro);
         divRegister.appendChild(inputNome);
         divRegister.appendChild(inputPassword);
+        divRegister.appendChild(buttonRegister);
+
+        formRegPlayer.addEventListener("submit", (e) => { 
+            e.preventDefault();
+            let usuario = document.getElementById('input-nome').value;
+            let senha = document.getElementById('input-passw').value;
+            registrarPlayer(usuario, senha);
+            setTimeout(() => {
+                console.log('Olá usuário registrado');
+            }, 3000);
+        });
+        git PushManager
 
         formRegPlayer.appendChild(divRegister);
-        divCorpo.appendChild(formRegPlayer);
-        return formRegPlayer;
+        sectionRegPlayer.appendChild(formRegPlayer);
+    }
+
+    const registrarPlayer = (key, value) => {
+        let senha = localStorage.getItem(key);
+        let textoErro = document.getElementById('p-reg-erro');
+        textoErro.style.fontSize = '14px';
+        if(senha == null){
+            localStorage.setItem(key, value);
+            textoErro.textContent = `Usuário ${key} registrado`;
+            textoErro.style.color = `#01ff11`;
+        } else {
+            textoErro.textContent = `Usuário ${key} já tem registro`;
+            textoErro.style.color = `#ff0000`;
+        }
     }
 
 

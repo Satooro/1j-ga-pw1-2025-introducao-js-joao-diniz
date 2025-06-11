@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let random = Math.floor(Math.random() * 50);
+        console.log(random);
+        let min = 0;
+        let maximo = 50;
+        let string = `${min} > $teste < ${maximo}`;
+        let num;
+        do{
+            num = parseInt(prompt('Informe o número'));
+            if(num>random && num < maximo){
+                maximo = num;
+            } else if(num<random && num > min) {
+                min = num;
+            }
+            console.log(`${min} > ${num} < ${maximo}`);
+        } while(num != random && num != 56);
+    </script>
+</body>
+</html>

@@ -28,6 +28,10 @@ main {
     margin-inline: auto;
 }
 
+#p-reg {
+    font-size: 20px;
+}
+
 .divMeio {
     display: flex;
     align-items: center;
@@ -37,6 +41,11 @@ main {
     border-radius: 25px;
 }
 
+#div-register {
+    flex-direction: column;
+    justify-content: center;
+}
+
 #div-botoes {
     display: flex;
     align-items: center;
@@ -44,6 +53,7 @@ main {
     width: 300px;
     height: 200px;
     background-color: #e2e2e2;
+    box-shadow: 4px 4px 2px #3e3e3e;
     border-radius: 25px;
 }
 
