@@ -3,10 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.clear();
     localStorage.setItem('a', 'a');
     let random = 0;
+    let vitorias = 0;
     const criarNumeroRandom = (min, max) => {
         random = Math.floor(Math.random() * (max - min));
     }
-    let tentativas = 10;
+    let tentativas = 9;
     let min = 0, maximo = 50;
 
 
@@ -154,32 +155,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const criarJogo = () => {
         const sectionJogo = document.getElementById('section-jogo');
         const divJogo = document.createElement('div');
-        criarNumeroRandom(0,50);
+        criarNumeroRandom(0, 50);
         let numeroRandom = random;
         console.log(`O Número aleatório gerado foi: ${numeroRandom}`);
         divJogo.id = 'div-jogo';
         divJogo.className = 'divMeio'
         criarNumerosMinMax(0, 50, divJogo);
 
-        tentativas = 10;
+        tentativas = 9;
 
         const pEscolha = document.createElement('p');
         pEscolha.id = 'p-jogo-escolha';
         pEscolha.textContent = `??`;
 
-        divJogo.appendChild(pEscolha)
+        const pTentativas = document.createElement('p');
+        const pStreak = document.createElement('p');
+        const p = document.createElement('p');
+        pTentativas.id = 'p-jogo-tentativas';
+        pStreak.id = 'p-jogo-streak';
+
+        divJogo.appendChild(pEscolha);
 
         criarNumerosClicaveis(divJogo);
         criarBotoesJogo(divJogo);
+        divJogo.appendChild(pTentativas);
+        divJogo.appendChild(pStreak);
         sectionJogo.appendChild(divJogo);
     }
 
-    const criarBotoesJogo = (divJogo) => {
-        const divButttonsJogo = document.createElement('div');
-        divButttonsJogo.id = 'botoes-jogo';
-        const botaoLimpar = document.createElement('button');
-        const botaoChutar = document.createElement('button');
+    const removerBotoesJogo = (id) => {
+        const botoes = document.querySelectorAll(`#${id} button`);
+        botoes.forEach(botao => botao.remove());
+    }
+
+    const criarJogarNovamente = () => {
+        const botaoJogarNov = document.createElement('button');
         const botaoSair = document.createElement('button');
+
+        botaoJogarNov.id = 'button-jogar-novamente';
+        botaoJogarNov.type = 'button';
+        botaoJogarNov.textContent = 'Jogar Novamente';
+        botaoJogarNov.className = 'botoes-jogo';
+        botaoJogarNov.addEventListener('click', () => {
+            const divJogo = document.getElementById('div-jogo');
+            divJogo.remove();
+            criarJogo();
+        })
+
+        botaoSair.id = 'button-jogo-sair';
+        botaoSair.type = 'button';
+        botaoSair.textContent = 'Sair';
+        botaoSair.className = 'botoes-jogo';
+        botaoSair.addEventListener('click', () => {
+            const sectionJogo = document.getElementById('section-jogo');
+            sectionJogo.remove();
+            criarSectionRegPlayer();
+            montarPagina();
+        });
+        const divButtonsJogo = document.getElementById('botoes-jogo');
+        divButtonsJogo.appendChild(botaoJogarNov);
+        divButtonsJogo.appendChild(botaoSair);
+
+    }
+
+    const botoesJogo = (botaoLimpar, botaoChutar, botaoSair) => {
+
         botaoLimpar.id = 'button-jogo-limpar';
         botaoLimpar.type = 'button';
         botaoLimpar.textContent = 'Limpar';
@@ -194,14 +234,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const pNumero = document.getElementById('p-jogo-escolha');
             numeroRandom = random;
             let numeroEscolhido = pNumero.textContent;
-            if(numeroEscolhido >= 0 && numeroEscolhido <= 50){
-                if(tentativas > 0){
-                    console.log(`Suas tentativas antes: ${tentativas}`)
+            const pTentativas = document.getElementById('p-jogo-tentativas')
+            if (numeroEscolhido >= 0 && numeroEscolhido <= 50) {
+                pTentativas.textContent = `Você tem ${tentativas} tentativas restantes`
+                if (tentativas > 0) {
                     tentativas--;
-                    console.log(`Suas tentativas agora: ${tentativas}`)
-                    if(numeroEscolhido>random && numeroEscolhido < maximo){
+                    if (numeroEscolhido > random && numeroEscolhido < maximo) {
                         maximo = numeroEscolhido;
-                    } else if(numeroEscolhido<random && numeroEscolhido > min) {
+                    } else if (numeroEscolhido < random && numeroEscolhido > min) {
                         min = numeroEscolhido;
                     }
 
@@ -209,12 +249,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pAmostra = document.getElementById('p-min-max');
                     pAmostra.textContent = `${min} > ? < ${maximo}`;
 
-                    if(numeroEscolhido == numeroRandom){
+                    if (numeroEscolhido == numeroRandom) {
                         pAmostra.textContent = `${min} > ${numeroEscolhido} < ${maximo}`;
-                        pNumero.textContent = `Você acertou o número.`;
+                        pNumero.textContent = `Você acertou o número. :)`;
+                        removerBotoesJogo('botoes-jogo');
+                        criarJogarNovamente();
+                        vitorias++;
+                        pTentativas.textContent = `Você está em uma sequência de ${vitorias} vitórias!`
                     };
+                } else {
+                    let vitoriasStreak = (vitorias > 0) ? `Suas tentativas acabaram e sua sequência de ${vitorias} vitórias chegou ao fim :(` : `Suas tentativas acabaram :(`;
+                    pTentativas.textContent = vitoriasStreak;
+                    vitorias = 0;
+                    removerBotoesJogo('botoes-jogo');
+                    criarJogarNovamente();
                 }
+            } else {
+                pTentativas.textContent = `Os números devem estar entre 0 à 50.`;
+                pNumero.textContent = `??`;
             }
+
         });
 
         botaoSair.id = 'button-jogo-sair';
@@ -227,10 +281,22 @@ document.addEventListener('DOMContentLoaded', () => {
             criarSectionRegPlayer();
             montarPagina();
         });
-        divButttonsJogo.appendChild(botaoLimpar);
-        divButttonsJogo.appendChild(botaoChutar);
-        divButttonsJogo.appendChild(botaoSair);
-        divJogo.appendChild(divButttonsJogo);
+    }
+
+    const criarBotoesJogo = (divJogo) => {
+        const divButtonsJogo = document.createElement('div');
+        divButtonsJogo.id = 'botoes-jogo';
+
+        const botaoLimpar = document.createElement('button');
+        const botaoChutar = document.createElement('button');
+        const botaoSair = document.createElement('button');
+
+        botoesJogo(botaoLimpar, botaoChutar, botaoSair);
+
+        divButtonsJogo.appendChild(botaoLimpar);
+        divButtonsJogo.appendChild(botaoChutar);
+        divButtonsJogo.appendChild(botaoSair);
+        divJogo.appendChild(divButtonsJogo);
     }
 
     const criarNumerosMinMax = (min, max, divCriar) => {
@@ -242,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const limparNumeros = () => {
         const pNumero = document.getElementById('p-jogo-escolha');
-        if(!pNumero.textContent.endsWith('.')){
+        if (!pNumero.textContent.endsWith(')')) {
             pNumero.textContent = "??";
         }
     }
@@ -256,13 +322,12 @@ document.addEventListener('DOMContentLoaded', () => {
             divNumero.className = 'div-numero';
             divNumero.textContent = count;
             divNumero.addEventListener('click', () => {
-                console.log(`Você clicou no número ${count}`);
                 const pNumero = document.getElementById('p-jogo-escolha');
                 let numeroAtual = pNumero.textContent;
-                if(pNumero.textContent == "??"){
+                if (pNumero.textContent == "??") {
                     pNumero == "";
                     pNumero.textContent = count;
-                } else if(!pNumero.textContent.endsWith(".")){
+                } else if (!pNumero.textContent.endsWith(")")) {
                     pNumero.textContent = numeroAtual + count;
                 }
             });
@@ -356,12 +421,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    criarSectionJogo();
-    criarJogo();
-    /*
-    Código comentado para facilitar o trabalho na página do jogo:
-
-    //criarSectionRegPlayer();
-    // montarPagina();
-    */
+    criarSectionRegPlayer();
+    montarPagina();
 });
