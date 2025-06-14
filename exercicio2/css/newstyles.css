@@ -57,6 +57,17 @@ main {
     flex-direction: row;
 }
 
+.inputs {
+    outline: none;
+    border-color: #3886fc;
+    border-radius: 25px;
+    font-weight: bold;
+    min-width: 200px;
+    text-align: center;
+    padding: 5px;
+    margin: 5px;
+}
+
 .botoes-jogo {
     margin-inline: 20px;
     background-color: #3886fc;
@@ -74,15 +85,39 @@ main {
     margin-inline: auto;
 }
 
-#p-reg {
+#p-reg,
+#p-login {
     font-size: 20px;
+    color: #242424;
+    font-weight: bold;
+    background-color: rgba(0, 77, 192, 0.8);
+    width: 100px;
+    height: 40px;
+    align-content: center;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#p-login-erro {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+#p-min-max {
+    font-size: 50px;
+    color: #3e3e3e;
+    font-weight: bold;
+}
+
+#p-jogo-escolha {
+    font-size: 30px;
 }
 
 .divMeio {
     display: flex;
     align-items: center;
     width: 300px;
-    height: 200px;
+    height: 300px;
     background-color: #e2e2e2;
     box-shadow: 4px 4px 2px #3e3e3e;
     border-radius: 25px;

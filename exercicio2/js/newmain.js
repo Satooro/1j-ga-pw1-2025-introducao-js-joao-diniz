@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const divLogin = document.createElement('div');
         const textLogin = document.createElement('p');
-        const textErro = document.createElement('p');
+        const textoErro = document.createElement('p');
         const inputNome = document.createElement('input');
         const inputPassword = document.createElement('input');
         const divLoginBotoes = document.createElement('div');
@@ -84,14 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
         divLogin.className = 'divMeio';
         textLogin.id = 'p-login';
         textLogin.textContent = 'Logar';
-        textErro.id = 'p-login-erro';
+        textoErro.id = 'p-login-erro';
 
         inputNome.id = 'input-nome-login';
         inputNome.type = `text`;
+        inputNome.className = 'inputs';
         inputNome.placeholder = `Nome de usuário`;
         inputNome.required = true;
 
         inputPassword.id = `input-passw-login`;
+        inputPassword.className = 'inputs';
         inputPassword.type = `password`;
         inputPassword.placeholder = `Insira sua senha`;
         inputPassword.required = true;
@@ -113,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
 
         divLogin.appendChild(textLogin);
-        divLogin.appendChild(textErro);
+        divLogin.appendChild(textoErro);
         divLogin.appendChild(inputNome);
         divLogin.appendChild(inputPassword);
         divLoginBotoes.appendChild(buttonVoltar);
@@ -129,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 criarSectionJogo();
                 criarJogo();
             } else {
-                console.log('passou não tio');
+                textoErro.textContent = `Usuário e/ou senha inválidos.`
             }
 
         })
@@ -156,8 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const sectionJogo = document.getElementById('section-jogo');
         const divJogo = document.createElement('div');
         criarNumeroRandom(0, 50);
-        let numeroRandom = random;
-        console.log(`O Número aleatório gerado foi: ${numeroRandom}`);
         divJogo.id = 'div-jogo';
         divJogo.className = 'divMeio'
         criarNumerosMinMax(0, 50, divJogo);
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         botaoChutar.addEventListener('click', () => {
             const pNumero = document.getElementById('p-jogo-escolha');
             numeroRandom = random;
-            let numeroEscolhido = pNumero.textContent;
+            let numeroEscolhido = parseInt(pNumero.textContent);
             const pTentativas = document.getElementById('p-jogo-tentativas')
             if (numeroEscolhido >= 0 && numeroEscolhido <= 50) {
                 pTentativas.textContent = `Você tem ${tentativas} tentativas restantes`
@@ -252,10 +252,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (numeroEscolhido == numeroRandom) {
                         pAmostra.textContent = `${min} > ${numeroEscolhido} < ${maximo}`;
                         pNumero.textContent = `Você acertou o número. :)`;
+                        pNumero.style.color = '#00ff00';
                         removerBotoesJogo('botoes-jogo');
                         criarJogarNovamente();
                         vitorias++;
                         pTentativas.textContent = `Você está em uma sequência de ${vitorias} vitórias!`
+                        pTentativas.style.color = '#00ff00';
+                        pTentativas.style.fontWeight = 'bold';
                     };
                 } else {
                     let vitoriasStreak = (vitorias > 0) ? `Suas tentativas acabaram e sua sequência de ${vitorias} vitórias chegou ao fim :(` : `Suas tentativas acabaram :(`;
@@ -359,11 +362,13 @@ document.addEventListener('DOMContentLoaded', () => {
         textoErro.id = `p-reg-erro`;
 
         inputNome.id = `input-nome`;
+        inputNome.className = 'inputs';
         inputNome.type = `text`;
         inputNome.placeholder = `Nome de usuário`;
         inputNome.required = true;
 
         inputPassword.id = `input-passw`;
+        inputPassword.className = 'inputs';
         inputPassword.type = `password`;
         inputPassword.placeholder = `Insira uma senha`;
         inputPassword.required = true;
@@ -409,18 +414,23 @@ document.addEventListener('DOMContentLoaded', () => {
         textoErro.style.fontSize = '14px';
         if (senha == null) {
             localStorage.setItem(key, value);
-            textoErro.textContent = `Usuário ${key} registrado`;
+            textoErro.textContent = `Usuário '${key}' registrado`;
             textoErro.style.color = `#01ff11`;
+            textoErro.style.fontWeight = 'bold';
             setTimeout(() => {
                 document.getElementById('div-register').remove();
                 registroOuLogin();
             }, 1000);
         } else {
-            textoErro.textContent = `Usuário ${key} já tem registro`;
+            textoErro.textContent = `Usuário '${key}' já tem registro`;
             textoErro.style.color = `#ff0000`;
+            textoErro.style.fontWeight = 'bold';
         }
     }
 
-    criarSectionRegPlayer();
-    montarPagina();
+
+    criarSectionJogo();
+    criarJogo();
+    // criarSectionRegPlayer();
+    // montarPagina();
 });
