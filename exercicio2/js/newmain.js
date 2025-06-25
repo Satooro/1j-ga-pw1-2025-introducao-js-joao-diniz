@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('a', 'a');
     let random = 0;
     let vitorias = 0;
+    let nomePlayer = null;
     const criarNumeroRandom = (min, max) => {
         random = Math.floor(Math.random() * (max - min));
     }
@@ -130,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sectionPlayer.remove();
                 criarSectionJogo();
                 criarJogo();
+                console.log(nomePlayer);
             } else {
                 textoErro.textContent = `Usuário e/ou senha inválidos.`
             }
@@ -143,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const verificarLogin = (key, senha) => {
         let verificacao = false;
         let passw = localStorage.getItem(key);
-        if (senha == passw) { verificacao = true; }
+        if (senha == passw) { verificacao = true; nomePlayer = key; }
         return verificacao;
     }
 
@@ -247,11 +249,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     pNumero.textContent = "??";
                     const pAmostra = document.getElementById('p-min-max');
-                    pAmostra.textContent = `${min} > ? < ${maximo}`;
+                    pAmostra.textContent = `${min} < ? < ${maximo}`;
 
                     if (numeroEscolhido == numeroRandom) {
                         pAmostra.textContent = `${min} > ${numeroEscolhido} < ${maximo}`;
-                        pNumero.textContent = `Você acertou o número. :)`;
+                        pNumero.textContent = `Parabéns '${nomePlayer}' você acertou o número. :)`;
                         pNumero.style.color = '#00ff00';
                         removerBotoesJogo('botoes-jogo');
                         criarJogarNovamente();
@@ -263,6 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     let vitoriasStreak = (vitorias > 0) ? `Suas tentativas acabaram e sua sequência de ${vitorias} vitórias chegou ao fim :(` : `Suas tentativas acabaram :(`;
                     pTentativas.textContent = vitoriasStreak;
+                    pTentativas.style.color = `#ff0000`;
+                    pTentativas.style.fontWeight = 'bold';
                     vitorias = 0;
                     removerBotoesJogo('botoes-jogo');
                     criarJogarNovamente();
@@ -305,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const criarNumerosMinMax = (min, max, divCriar) => {
         const p = document.createElement('p');
         p.id = 'p-min-max';
-        p.textContent = `${min} > ? < ${max}`;
+        p.textContent = `${min} < ? < ${max}`;
         divCriar.appendChild(p);
     }
 
@@ -408,6 +412,19 @@ document.addEventListener('DOMContentLoaded', () => {
         sectionRegPlayer.appendChild(formRegPlayer);
     }
 
+    const gerenciarSequencia = (key, valor) => {
+        let valorVitorias = localStorage.getItem(`${key}-vitorias`);
+        let keyVitorias = `${key}-vitorias`;
+        if (valorVitorias == null) {
+            localStorage.setItem(keyVitorias, 0);
+        }
+        if (valor >= 1) {
+            localStorage.setItem(keyVitorias, `${valor}`)
+        } else {
+            localStorage.setItem(keyVitorias, 0);
+        }
+    }
+
     const registrarPlayer = (key, value) => {
         let senha = localStorage.getItem(key);
         let textoErro = document.getElementById('p-reg-erro');
@@ -429,8 +446,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    criarSectionJogo();
-    criarJogo();
-    // criarSectionRegPlayer();
-    // montarPagina();
+    // criarSectionJogo();
+    // criarJogo();
+    criarSectionRegPlayer();
+    montarPagina();
 });
